@@ -135,9 +135,14 @@ if (isset($_SESSION['pp_user'])) {
 
 			echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
 			echo('<p><a href="https://pplane.herokuapp.com/install.php?k='.$share_key.'">https://pplane.herokuapp.com/install.php?k='.$share_key.'</a>');
-	
-			if ($stage == 3){
-				echo('todo email to '.$share_email);	
+			
+			if ($stage == 2){
+				echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
+				echo('<p><a href="https://pplane.herokuapp.com/install.php?k='.$share_key.'">https://pplane.herokuapp.com/install.php?k='.$share_key.'</a>');
+			}
+			else if ($stage == 3){
+				echo('<p>Generated share key: '.$share_key);
+				echo('<p>TODO email to '.$share_email);	
 			};
 	
 		}
