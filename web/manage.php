@@ -148,7 +148,7 @@ if (isset($_SESSION['pp_user'])) {
 	// list user's apps - grouped
 	echo('<h4>Your Apps</h4>');
 
-	$pq1 = 'SELECT DISTINCT "appid" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
+	$pq1 = 'SELECT DISTINCT "appid" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\' ORDER BY "id" DESC'; 
 	$rs1 = pg_query($con, $pq1);
 
 	while($row = pg_fetch_assoc($rs1)){	
