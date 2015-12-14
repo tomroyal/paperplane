@@ -6,7 +6,7 @@
 $share_key = $_GET['k'];
 $stage = $_GET['s'];
 
-include('ppconfig.php');
+include('./includes/ppconfig.php');
 
 // html template
 include('./html/top.php');
