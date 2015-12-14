@@ -7,8 +7,8 @@
 
 $apt_debug_mode = 1;
 
-$dbxtoken = "1l2ISB64xV4AAAAAAADMXOuijHOVKADZh9Qkj387ckgjzl5CPiy3G6WV35IHRT6C";
-$dbxname = "paperplane01";
+$dbxtoken = getenv('DB_TOKEN');
+$dbxname = getenv('DB_NAME');
 
 // allow user registration? 1 for yes, 0 for no
 $pp_allow_reg = 1;
@@ -16,7 +16,7 @@ $pp_allow_reg = 1;
 $pp_reg_pass = "betatest1";
 
 // salt for passwords and stuff - mash the keyboard ;)
-$pwsalt = "aiuysfgaysujhfbas786afsyt";
+$pwsalt = getenv('PASS_SALT');
 
 // connect database
 
