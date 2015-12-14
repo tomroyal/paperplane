@@ -4,9 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "597769f2ca061e30f21825db057da3e9",
-    "content-hash": "202caa7402c4f40bda57d4c2a6f7ba15",
+    "hash": "a629bee6e4b338e8c7feda8974ec9edd",
+    "content-hash": "4749615cf491b644f3a7b9d9b2dee053",
     "packages": [
+        {
+            "name": "dropbox/dropbox-sdk",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dropbox/dropbox-sdk-php.git",
+                "reference": "6901f8122458e0ce7e391468c0cf6cca465bd0ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dropbox/dropbox-sdk-php/zipball/6901f8122458e0ce7e391468c0cf6cca465bd0ee",
+                "reference": "6901f8122458e0ce7e391468c0cf6cca465bd0ee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">= 5.3"
+            },
+            "require-dev": {
+                "apigen/apigen": "2.8.2",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "2.0.0RC3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Dropbox": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Dropbox SDK for PHP",
+            "keywords": [
+                "dropbox"
+            ],
+            "time": "2015-06-29 21:47:57"
+        },
         {
             "name": "mandrill/mandrill",
             "version": "1.0.55",
@@ -49,6 +88,50 @@
                 "email"
             ],
             "time": "2015-09-22 13:58:03"
+        },
+        {
+            "name": "rodneyrehm/plist",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rodneyrehm/CFPropertyList.git",
+                "reference": "a59040c1c86188eec89de43f8827b42a0bd36028"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rodneyrehm/CFPropertyList/zipball/a59040c1c86188eec89de43f8827b42a0bd36028",
+                "reference": "a59040c1c86188eec89de43f8827b42a0bd36028",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CFPropertyList": "classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Kruse",
+                    "email": "cjk@wwwtech.de"
+                },
+                {
+                    "name": "Rodney Rehm",
+                    "email": "mail+github@rodneyrehm.de"
+                }
+            ],
+            "description": "Library for reading and writing Apple's CFPropertyList (plist) files in XML as well as binary format.",
+            "homepage": "https://github.com/rodneyrehm/CFPropertyList",
+            "keywords": [
+                "plist"
+            ],
+            "time": "2012-07-22 10:57:41"
         }
     ],
     "packages-dev": [
