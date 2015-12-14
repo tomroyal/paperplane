@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5d6160b12ce232f4eb8e27e7de6ad7de",
-    "content-hash": "a11cd7a6ead546564f51a7858a670931",
+    "hash": "a1ff5a5d5b26c445a4d45109865954b0",
+    "content-hash": "99f491f1fd9e1ddc0b25beb158b94cb9",
     "packages": [
         {
             "name": "dropbox/dropbox-sdk",
@@ -88,50 +88,6 @@
                 "email"
             ],
             "time": "2015-09-22 13:58:03"
-        },
-        {
-            "name": "rodneyrehm/plist",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rodneyrehm/CFPropertyList.git",
-                "reference": "2ea0483806c989eb0518a767fa29a111bb29cb67"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rodneyrehm/CFPropertyList/zipball/2ea0483806c989eb0518a767fa29a111bb29cb67",
-                "reference": "2ea0483806c989eb0518a767fa29a111bb29cb67",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CFPropertyList": "classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Kruse",
-                    "email": "cjk@wwwtech.de"
-                },
-                {
-                    "name": "Rodney Rehm",
-                    "email": "mail+github@rodneyrehm.de"
-                }
-            ],
-            "description": "Library for reading and writing Apple's CFPropertyList (plist) files in XML as well as binary format.",
-            "homepage": "https://github.com/rodneyrehm/CFPropertyList",
-            "keywords": [
-                "plist"
-            ],
-            "time": "2015-01-28 23:18:19"
         }
     ],
     "packages-dev": [

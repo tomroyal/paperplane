@@ -6,7 +6,8 @@
 session_start(); 
 
 include('./includes/ppconfig.php');
-require('autoload.php'); // does dropbox, CFpropertylist
+require('autoload.php'); // does dropbox
+include('./includes/CFP/CFPropertyList.php'); // doesn't work via composer, odd..
 
 $stage = $_REQUEST['s'];
 $share_app_id = $_REQUEST['i'];
@@ -42,7 +43,7 @@ if (isset($_SESSION['pp_user'])) {
 		
 		if (is_dir($userid)) {
 		
-			$zip = zip_open($ipafilepath);
+		$zip = zip_open($ipafilepath);
 		if ($zip) {
 		  while ($zip_entry = zip_read($zip)) {
 		    $fileinfo = pathinfo(zip_entry_name($zip_entry));	
