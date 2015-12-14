@@ -26,7 +26,6 @@ if (isset($_SESSION['pp_user'])) {
 	
 	// handle upload
 	if ($stage == 1){
-		/*
 		// do upload
 		$fname = $_FILES["file"]["name"];	
 		$tname = $_FILES["file"]["tmp_name"];	
@@ -78,17 +77,18 @@ if (isset($_SESSION['pp_user'])) {
 			};	
 			
 			// put in database. use index to unique dropbox name, below
-			$theapp_id = $link->real_escape_string($theapp_id);
-			$theapp_name = $link->real_escape_string($theapp_name);
-			$theapp_ver = $link->real_escape_string($theapp_ver);
-			$theapp_hash = $link->real_escape_string(md5($theapp_id.$pwsalt.time()));
+			$theapp_id = pg_escape_string($theapp_id);
+			$theapp_name = pg_escape_string($theapp_name);
+			$theapp_ver = pg_escape_string($theapp_ver);
+			$theapp_hash = pg_escape_string(md5($theapp_id.$pwsalt.time()));
 			$q2='INSERT INTO pp_apps (ownerid, appid, appname, appversion, dlhash) VALUES ("'.$userid.'","'.$theapp_id.'","'.$theapp_name.'","'.$theapp_ver.'","'.$theapp_hash.'")';
- 
-			if($link->query($q2) === false) {
-			  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $link->error, E_USER_ERROR);
-			} else {
-			  $last_inserted_id = $link->insert_id;
-			}
+			
+			$pq2 = 'INSERT INTO '.$schemaname.'.pp_apps ("ownerid", "appid", "appname", "appversion", "dlhash") VALUES (\''.$userid.'\', \''.$theapp_id.'\', \''.$theapp_name.'\', \''.$theapp_ver.'\', \''.$theapp_hash.'\') RETURNING "id"'; 
+			$rs2 = pg_query($con, $pq2);
+			
+			// get insert id
+			$temp = pg_fetch_row($rs2); 
+			$last_inserted_id = $temp['0'];	
 
 			// push file to dropbox
 			$dbxfileurl = '/'.$userid.'/'.$last_inserted_id.'-'.$fname;
@@ -99,7 +99,7 @@ if (isset($_SESSION['pp_user'])) {
 			
 			if ($result['mime_type'] == 'application/octet-stream'){		
 				// add dbx path to db
-				$dbxfileurl = $link->real_escape_string($dbxfileurl);
+				$dbxfileurl = pg_escape_string($dbxfileurl);
 				$q3='UPDATE pp_apps SET appdbpath = "'.$dbxfileurl.'" WHERE id = "'.$last_inserted_id.'"';
 				if($link->query($q3) === false) {
 				  // todo handle error
@@ -115,7 +115,6 @@ if (isset($_SESSION['pp_user'])) {
 		else {
 			echo('<p>Error - file could not be processed.');	
 		};		
-		*/
 	} 	// end upload
 	else if ($stage == 2){
 		/*
@@ -130,7 +129,7 @@ if (isset($_SESSION['pp_user'])) {
 			    $theapp_ver = $row5['appversion'];
 			};
 			// make share key
-			$share_key = $link->real_escape_string(md5($theapp_ver.$pwsalt.time()));
+			$share_key = pg_escape_string(md5($theapp_ver.$pwsalt.time()));
 			$q6='INSERT INTO pp_shares (ownerid, appid, sharekey, limuses) VALUES ("'.$userid.'","'.$theapp_dbid.'","'.$share_key.'",1)';
 			if($link->query($q6) === false) {
 				  // todo handle error
@@ -171,9 +170,6 @@ if (isset($_SESSION['pp_user'])) {
 		};
 	};
 
-
-	$link->close();
-	
 	// show upload form
 	?>
 	</div>
