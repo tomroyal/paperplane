@@ -101,13 +101,11 @@ if (isset($_SESSION['pp_user'])) {
 			if ($result['mime_type'] == 'application/octet-stream'){		
 				// add dbx path to db
 				$dbxfileurl = pg_escape_string($dbxfileurl);
-				$q3='UPDATE pp_apps SET appdbpath = "'.$dbxfileurl.'" WHERE id = "'.$last_inserted_id.'"';
-				if($link->query($q3) === false) {
-				  // todo handle error
-				} else {
-				  // success
-				  echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
-				};		
+				$pq3 = 'SUPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
+				$rs3 = pg_query($con, $pq3);	
+				
+				echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
+						
 			}
 			else {
 				// TODO - remove db entry for failed
