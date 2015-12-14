@@ -119,8 +119,6 @@ if (isset($_SESSION['pp_user'])) {
 	} 	// end upload
 	else if (($stage == 2) || ($stage == 3)){
 		// make share link
-		$q5 = 'SELECT * FROM pp_apps WHERE dlhash = "'.$share_app_id.'"';
-		$r5=$link->query($q5); 
 		$pq5 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "dlhash" = \''.$share_app_id.'\''; 
 		$rs5 = pg_query($con, $pq5);
 		
@@ -131,9 +129,7 @@ if (isset($_SESSION['pp_user'])) {
 			    $theapp_ver = $row5['appversion'];
 			};
 			// make share key
-			$share_key = pg_escape_string(md5($theapp_ver.$pwsalt.time()));
-			$q6='INSERT INTO pp_shares (ownerid, appid, sharekey, limuses) VALUES ("'.$userid.'","'.$theapp_dbid.'","'.$share_key.'",1)';
-			
+			$share_key = pg_escape_string(md5($theapp_ver.$pwsalt.time()));			
 			$pq6 = 'INSERT INTO '.$schemaname.'.pp_shares ("ownerid", "appid", "sharekey", "limuses") VALUES (\''.$userid.'\',\''.$theapp_dbid.'\',\''.$share_key.'\',\'1\')'; 
 			$rs6 = pg_query($con, $pq6);
 
