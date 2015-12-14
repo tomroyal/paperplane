@@ -177,6 +177,7 @@ if (isset($_SESSION['pp_user'])) {
 			<input type="hidden" id="i" name="i" value="<?echo($row2['dlhash']);?>">
 			<input type="hidden" id="s" name="s" value="3">
 			<p><input type="submit" value="Email">
+			</form>
 			<?
 		};
 	};
