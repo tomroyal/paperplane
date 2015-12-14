@@ -11,6 +11,8 @@ include('./includes/CFP/CFPropertyList.php'); // doesn't work via composer, odd.
 
 $stage = $_REQUEST['s'];
 $share_app_id = $_REQUEST['i'];
+$share_email =  $_REQUEST['e'];
+
 
 
 use \Dropbox as dbx;
@@ -115,14 +117,15 @@ if (isset($_SESSION['pp_user'])) {
 			echo('<p>Error - file could not be processed.');	
 		};		
 	} 	// end upload
-	else if ($stage == 2){
-		/*
+	else if (($stage == 2) || ($stage == 3)){
 		// make share link
 		$q5 = 'SELECT * FROM pp_apps WHERE dlhash = "'.$share_app_id.'"';
 		$r5=$link->query($q5); 
-		if ($r5->num_rows == 1){
-			$r5->data_seek(0);
-			while($row5 = $r5->fetch_assoc()){
+		$pq5 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "dlhash" = \''.$share_app_id.'\''; 
+		$rs5 = pg_query($con, $pq5);
+		
+		if (pg_num_rows($rs5) == 1){
+			while($row5 = pg_fetch_assoc($rs5)){
 			    $theapp_dbid = $row5['id'];
 			    $theapp_name = $row5['appname'];
 			    $theapp_ver = $row5['appversion'];
@@ -130,18 +133,21 @@ if (isset($_SESSION['pp_user'])) {
 			// make share key
 			$share_key = pg_escape_string(md5($theapp_ver.$pwsalt.time()));
 			$q6='INSERT INTO pp_shares (ownerid, appid, sharekey, limuses) VALUES ("'.$userid.'","'.$theapp_dbid.'","'.$share_key.'",1)';
-			if($link->query($q6) === false) {
-				  // todo handle error
-				} else {
-				  // success
-				  echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
-				  echo('<p><a href="https://'.$_SERVER['SERVER_NAME'].'/install.php?k='.$share_key.'">https://'.$_SERVER['SERVER_NAME'].'/install.php?k='.$share_key.'</a>');
-			};	
+			
+			$pq6 = 'INSERT INTO '.$schemaname.'.pp_shares ("ownerid", "appid", "sharekey", "limuses") VALUES (\''.$userid.'\',\''.$theapp_dbid.'\',\''.$share_key.'\',\'1\')'; 
+			$rs6 = pg_query($con, $pq6);
+
+			echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
+			echo('<p><a href="https://pplane.herokuapp.com/install.php?k='.$share_key.'">https://pplane.herokuapp.com/install.php?k='.$share_key.'</a>');
+	
+			if ($stage == 3){
+				echo('todo email to '.$share_email);	
+			};
+	
 		}
 		else {
 			// app removed before share was activated	
 		};
-		*/
 	};
 
 
@@ -172,7 +178,8 @@ if (isset($_SESSION['pp_user'])) {
 			?>
 			<form action="manage.php" method="get">
 			<input type="email" name="e" id="e" placeholder="share@this.with">
-			<input type="hidden" id="dlk" name="dlk" value="<?echo($row2['dlhash']);?>">
+			<input type="hidden" id="i" name="i" value="<?echo($row2['dlhash']);?>">
+			<input type="hidden" id="s" name="s" value="3">
 			<p><input type="submit" value="Email">
 			<?
 		};
