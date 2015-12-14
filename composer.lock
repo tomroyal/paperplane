@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a629bee6e4b338e8c7feda8974ec9edd",
-    "content-hash": "4749615cf491b644f3a7b9d9b2dee053",
+    "hash": "5d6160b12ce232f4eb8e27e7de6ad7de",
+    "content-hash": "a11cd7a6ead546564f51a7858a670931",
     "packages": [
         {
             "name": "dropbox/dropbox-sdk",
@@ -91,16 +91,16 @@
         },
         {
             "name": "rodneyrehm/plist",
-            "version": "v2.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rodneyrehm/CFPropertyList.git",
-                "reference": "a59040c1c86188eec89de43f8827b42a0bd36028"
+                "reference": "2ea0483806c989eb0518a767fa29a111bb29cb67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rodneyrehm/CFPropertyList/zipball/a59040c1c86188eec89de43f8827b42a0bd36028",
-                "reference": "a59040c1c86188eec89de43f8827b42a0bd36028",
+                "url": "https://api.github.com/repos/rodneyrehm/CFPropertyList/zipball/2ea0483806c989eb0518a767fa29a111bb29cb67",
+                "reference": "2ea0483806c989eb0518a767fa29a111bb29cb67",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
             "keywords": [
                 "plist"
             ],
-            "time": "2012-07-22 10:57:41"
+            "time": "2015-01-28 23:18:19"
         }
     ],
     "packages-dev": [

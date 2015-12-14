@@ -4,7 +4,7 @@
 	  "ext-mbstring": "*",
 	  "mandrill/mandrill": "1.0.*",
 	  "dropbox/dropbox-sdk": "1.1.*",
-	  "rodneyrehm/plist": "2.0,*"
+	  "rodneyrehm/plist": "2.0.*"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
