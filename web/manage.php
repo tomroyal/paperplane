@@ -169,6 +169,12 @@ if (isset($_SESSION['pp_user'])) {
 			
 			$sharelinkurl = './manage.php?s=2&i='.$row2['dlhash'];
 			echo('<p><a href="'.$linkurl.'"><span class="button">Install</span></a>  <a href="'.$sharelinkurl.'"><span class="button">Share</span></p></a>');
+			?>
+			<form action="manage.php" method="get">
+			<input type="email" name="e" id="e" placeholder="share@this.with">
+			<input type="hidden" id="dlk" name="dlk" value="<?echo($row2['dlhash']);?>">
+			<p><input type="submit" value="Email">
+			<?
 		};
 	};
 
