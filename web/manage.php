@@ -163,7 +163,10 @@ if (isset($_SESSION['pp_user'])) {
 				$firstver = 0;
 			};
 			echo('<p>').'Version '.$row2['appversion'];	
-			$linkurl = "itms-services://?action=download-manifest&url=https://".$_SERVER['SERVER_NAME'].'/plists/'.$row2['dlhash'].'/info.plist';
+			// $linkurl = "itms-services://?action=download-manifest&url=https://".$_SERVER['SERVER_NAME'].'/plists/'.$row2['dlhash'].'/info.plist';
+			$linkurl = 'itms-services://?action=download-manifest&url=https://pplane.herokuapp.com/plists/'.$row2['dlhash'].'/info.plist';
+			
+			
 			$sharelinkurl = './manage.php?s=2&i='.$row2['dlhash'];
 			echo('<p><a href="'.$linkurl.'"><span class="button">Install</span></a>  <a href="'.$sharelinkurl.'"><span class="button">Share</span></p></a>');
 		};
