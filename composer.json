@@ -2,7 +2,7 @@
   "require" : {
 	  "php": "~5.6.0",
 	  "ext-mbstring": "*",
-	  "mandrill/mandrill": "1.0.*",
+	  "mandrill/mandrill": "1.0.*"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
