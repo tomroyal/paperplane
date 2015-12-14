@@ -2,6 +2,3 @@ Options +FollowSymlinks
 RewriteEngine On
 RewriteBase /
 RewriteRule ^plists/(.*)/(.*)$ plist.php?f=$1 [NC,L]
-
-php_value post_max_size 10M
-php_value upload_max_filesize 10M
