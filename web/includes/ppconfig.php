@@ -13,7 +13,7 @@ $dbxname = getenv('DB_NAME');
 // allow user registration? 1 for yes, 0 for no
 $pp_allow_reg = 1;
 // simple password required to show registration options - leave blank for open reg.
-$pp_reg_pass = "betatest1";
+$pp_reg_pass = getenv('REG_KEY');
 
 // salt for passwords and stuff - mash the keyboard ;)
 $pwsalt = getenv('PASS_SALT');
