@@ -138,7 +138,7 @@ if (isset($_SESSION['pp_user'])) {
 	while($row = pg_fetch_assoc($rs1)){	
 		
 		$thisappid = $row['appid'];	
-		$pq2 = 'SELECT * FROM '.$schemaname.'.pp_apps ORDER BY "id" DESC WHERE "ownerid" = \''.$userid.'\' AND "appid" = \''.$thisappid.'\''; 
+		$pq2 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\' AND "appid" = \''.$thisappid.'\''; 
 		$rs2 = pg_query($con, $pq2);		
 		$firstver = 1;
 		while ($row2 = pg_fetch_assoc($rs2)){	
