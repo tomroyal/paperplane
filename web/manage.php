@@ -7,7 +7,6 @@ session_start();
 
 include('./includes/ppconfig.php');
 require('autoload.php'); // does dropbox
-// include('./includes/CFP/CFPropertyList.php'); // doesn't work via composer, odd..
 
 $stage = $_REQUEST['s'];
 $share_app_id = $_REQUEST['i'];
@@ -150,16 +149,6 @@ if (isset($_SESSION['pp_user'])) {
 			
 			$sharelinkurl = './manage.php?s=2&i='.$row2['dlhash'];
 			echo('<p><a href="'.$linkurl.'"><span class="button">Install</span></a>  <a href="'.$sharelinkurl.'"><span class="button">Share</span></p></a>');
-			/*
-			?>
-			<form action="manage.php" method="get">
-			<input type="email" name="e" id="e" placeholder="share@this.with">
-			<input type="hidden" id="i" name="i" value="<?echo($row2['dlhash']);?>">
-			<input type="hidden" id="s" name="s" value="3">
-			<p><input type="submit" value="Email">
-			</form>
-			<?
-			*/
 		};
 	};
 
@@ -192,7 +181,13 @@ if (isset($_SESSION['pp_user'])) {
 					<label for="appv">Version Number</label>
 					<br><input type="text" name="appv" id="appv"></p>
 					
-					<br><input type="file" name="file" id="file" class="required">
+					<!--<br><input type="file" name="file" id="file" class="required">-->
+					
+					<br><label class="custom-file-upload">
+					    <input type="file" name="file" id="file" class="required"/>
+					    Choose IPA
+					</label>
+					
 					<br><input class="button upbtn" type="submit" name="submit" value="Upload">
 	</form>
 	<?
