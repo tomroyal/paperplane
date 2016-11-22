@@ -170,7 +170,7 @@ if (isset($_SESSION['pp_user'])) {
 						echo('<option value="none">No apps available</option>');
 					}
 					else {
-						echo('<option value="none">Select an app</option>');
+						echo('<option value="none">Choose an app</option>');
 						while ($group_row = pg_fetch_array($rs1)){
 							echo('<option value="'.$group_row['id'].'">'.$group_row['appname'].'</option>');	
 						};
@@ -178,10 +178,14 @@ if (isset($_SESSION['pp_user'])) {
 					?>	
 					</select>
 					
+					<label for="appx">Or New Name</label>
+					<input type="text" name="appx" id="appx"></p>
+					
+					<label for="appy">New AppID/label>
+					<input type="text" name="appy" id="appy"></p>
+					
 					<label for="appv">Version Number</label>
 					<input type="text" name="appv" id="appv"></p>
-					
-					<!--<br><input type="file" name="file" id="file" class="required">-->
 					
 					<label class="custom-file-upload">
 					    <input type="file" name="file" id="file" class="required"/>Choose IPA File
