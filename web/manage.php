@@ -13,6 +13,8 @@ $stage = $_REQUEST['s'];
 $share_app_id = $_REQUEST['i'];
 $share_email =  $_REQUEST['e'];
 
+$add_id =  $_REQUEST['appn'];
+$add_ver = $_REQUEST['appv'];
 
 
 use \Dropbox as dbx;
@@ -37,18 +39,25 @@ if (isset($_SESSION['pp_user'])) {
 		if (!is_dir($userid)) {
 	    		if (!mkdir($userid)) die('Failed to create folder '.$fileid.'... Is the current folder writeable?');
 	    }
-			
-		// get metadata from plist
-		$plist = new CFPropertyList('Info.plist');
-		$plistArray = $plist->toArray();	
-		$theapp_id = $plistArray['CFBundleIdentifier'];
-		$theapp_name = $plistArray['CFBundleDisplayName'];
-		$theapp_ver = $plistArray['CFBundleShortVersionString'];
 		
-		// cleanup temp plist
-		if (file_exists("Info.plist")) {
-			@unlink("Info.plist");
-		};	
+		// get metadata for app
+		
+		if ($add_id != ""){
+			// new version of existing app
+			$add_id = pg_escape_string($add_id);
+			$pq10 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "id" = \''.$add_id.'\''; 
+			$rs10 = pg_query($con, $pq10);
+			
+			while($row10 = pg_fetch_assoc($rs10)){
+			    $theapp_id = $row5['appid'];
+			    $theapp_name = $row5['appname'];
+			    $theapp_ver = $add_ver;
+			};
+			
+		}
+		else {
+			// new app
+		}
 		
 		// put in database. use index to unique dropbox name, below
 		$theapp_id = pg_escape_string($theapp_id);
@@ -181,6 +190,9 @@ if (isset($_SESSION['pp_user'])) {
 					};
 					?>	
 					</select>
+					
+					<label for="appv">Version Number</label>
+					<p><input name="appv" id="appv"></p>
 					
 					<p><input type="file" name="file" id="file" class="required">
 					<p><input class="button upbtn" type="submit" name="submit" value="Upload">
