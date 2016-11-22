@@ -83,7 +83,7 @@ if (isset($_SESSION['pp_user'])) {
 		if ($result['mime_type'] == 'application/octet-stream'){		
 			// add dbx path to db
 			$dbxfileurl = pg_escape_string($dbxfileurl);
-			$pq3 = 'SUPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
+			$pq3 = 'UPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
 			$rs3 = pg_query($con, $pq3);	
 			
 			echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
@@ -171,7 +171,6 @@ if (isset($_SESSION['pp_user'])) {
 	<div class="three columns u-pull-right">
 	<h4>Upload</h4>
 	<form id="upform" action="manage.php" method="post" enctype="multipart/form-data">
-					<p>Select an IPA file to upload:
 					<input type="hidden" name="s" value="1">	
 					
 					<label for="appn">App Name</label>
@@ -192,10 +191,10 @@ if (isset($_SESSION['pp_user'])) {
 					</select>
 					
 					<label for="appv">Version Number</label>
-					<p><input name="appv" id="appv"></p>
+					<br><input type="text" name="appv" id="appv"></p>
 					
-					<p><input type="file" name="file" id="file" class="required">
-					<p><input class="button upbtn" type="submit" name="submit" value="Upload">
+					<br><input type="file" name="file" id="file" class="required">
+					<br><input class="button upbtn" type="submit" name="submit" value="Upload">
 	</form>
 	<?
 	// show logout
