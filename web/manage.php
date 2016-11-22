@@ -187,7 +187,7 @@ if (isset($_SESSION['pp_user'])) {
 					<label for="appn">App Name</label>
 					<select name="appn" id="appn">
 					<?	
-					$pq1 = 'SELECT DISTINCT "appname", "id" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
+					$pq1 = 'SELECT DISTINCT "appid" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
 					$rs1 = pg_query($con, $pq1);
 					if (pg_num_rows($rs1) == 0){
 						echo('<option value="none">No apps available</option>');
@@ -195,7 +195,11 @@ if (isset($_SESSION['pp_user'])) {
 					else {
 						echo('<option value="none">Choose an app</option>');
 						while ($group_row = pg_fetch_array($rs1)){
-							echo('<option value="'.$group_row['id'].'">'.$group_row['appname'].'</option>');	
+							
+							$pq11 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\' AND "appid" = \''.$group_row['appid'].'\''; 
+							$rs11 = pg_query($con, $pq11);
+							$item_row = pg_fetch_array($rs11);	
+							echo('<option value="'.$item_row['id'].'">'.$item_row['appname'].'</option>');	
 						};
 					};
 					?>	
