@@ -109,10 +109,7 @@ if (isset($_SESSION['pp_user'])) {
 			$share_key = pg_escape_string(md5($theapp_ver.$pwsalt.time()));			
 			$pq6 = 'INSERT INTO '.$schemaname.'.pp_shares ("ownerid", "appid", "sharekey", "limuses") VALUES (\''.$userid.'\',\''.$theapp_dbid.'\',\''.$share_key.'\',\'1\')'; 
 			$rs6 = pg_query($con, $pq6);
-
-			echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
-			echo('<p><a href="https://pplane.herokuapp.com/install.php?k='.$share_key.'">https://pplane.herokuapp.com/install.php?k='.$share_key.'</a>');
-			
+		
 			if ($stage == 2){
 				echo('<p class="alert">Success - single-use share link created. Send this to the tester:');
 				echo('<p><a href="https://pplane.herokuapp.com/install.php?k='.$share_key.'">https://pplane.herokuapp.com/install.php?k='.$share_key.'</a>');
@@ -153,6 +150,7 @@ if (isset($_SESSION['pp_user'])) {
 			
 			$sharelinkurl = './manage.php?s=2&i='.$row2['dlhash'];
 			echo('<p><a href="'.$linkurl.'"><span class="button">Install</span></a>  <a href="'.$sharelinkurl.'"><span class="button">Share</span></p></a>');
+			/*
 			?>
 			<form action="manage.php" method="get">
 			<input type="email" name="e" id="e" placeholder="share@this.with">
@@ -161,6 +159,7 @@ if (isset($_SESSION['pp_user'])) {
 			<p><input type="submit" value="Email">
 			</form>
 			<?
+			*/
 		};
 	};
 
