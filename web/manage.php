@@ -44,7 +44,7 @@ if (isset($_SESSION['pp_user'])) {
 		// get metadata for app
 		$gotmetadata = 0;
 		
-		if ($add_ver != ""){
+		if ($add_ver == ""){
 			// error, version needed
 		}
 		else if ($add_id != "none"){
