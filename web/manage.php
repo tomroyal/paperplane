@@ -138,7 +138,7 @@ if (isset($_SESSION['pp_user'])) {
 	while($row = pg_fetch_assoc($rs1)){	
 		
 		$thisappid = $row['appid'];	
-		$pq2 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\' AND "appid" = \''.$thisappid.'\''; 
+		$pq2 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\' AND "appid" = \''.$thisappid.'\' ORDER BY "id" DESC'; 
 		$rs2 = pg_query($con, $pq2);		
 		$firstver = 1;
 		while ($row2 = pg_fetch_assoc($rs2)){	
@@ -182,7 +182,7 @@ if (isset($_SESSION['pp_user'])) {
 						echo('<option value="none">No apps available</option>');
 					}
 					else {
-						echo('<option value="none">No group selected</option>');
+						echo('<option value="none">Select an app</option>');
 						while ($group_row = pg_fetch_array($rs1)){
 							echo('<option value="'.$group_row['id'].'">'.$group_row['appname'].'</option>');	
 						};
