@@ -44,7 +44,10 @@ if (isset($_SESSION['pp_user'])) {
 		// get metadata for app
 		$gotmetadata = 0;
 		
-		if (($add_id != "none") || ($add_ver != "")){
+		if ($add_ver != ""){
+			// error, version needed
+		}
+		else if ($add_id != "none"){
 			// new version of existing app
 			$add_id = pg_escape_string($add_id);
 			$pq10 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "id" = \''.$add_id.'\''; 
@@ -59,7 +62,7 @@ if (isset($_SESSION['pp_user'])) {
 		}
 		else {
 			// new app
-			if (($add_name != "") && ($add_appid != "") && ($add_ver != "")){
+			if (($add_name != "") && ($add_appid != "")){
 				$theapp_name = pg_escape_string($add_name);
 				$theapp_id = pg_escape_string($add_appid);
 				$theapp_ver = pg_escape_string($add_ver);
