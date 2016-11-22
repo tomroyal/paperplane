@@ -44,7 +44,7 @@ if (isset($_SESSION['pp_user'])) {
 		// get metadata for app
 		$gotmetadata = 0;
 		
-		if (($add_id != "") && ($add_ver != "")){
+		if (($add_id == "none") || ($add_ver != "")){
 			// new version of existing app
 			$add_id = pg_escape_string($add_id);
 			$pq10 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "id" = \''.$add_id.'\''; 
