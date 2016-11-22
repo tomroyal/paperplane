@@ -168,7 +168,7 @@ if (isset($_SESSION['pp_user'])) {
 					<label for="appn">App Name</label>
 					<select name="appn" id="appn">
 					<?	
-					$pq1 = 'SELECT DISTINCT "appname" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
+					$pq1 = 'SELECT DISTINCT "appname", "id" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
 					$rs1 = pg_query($con, $pq1);
 					if (pg_num_rows($rs1) == 0){
 						echo('<option value="none">No apps available</option>');
