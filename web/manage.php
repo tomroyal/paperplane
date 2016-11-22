@@ -33,89 +33,57 @@ if (isset($_SESSION['pp_user'])) {
 		$fname = $_FILES["file"]["name"];	
 		$tname = $_FILES["file"]["tmp_name"];	
 		$ipafilepath = realpath($_FILES["file"]["tmp_name"]);
-		// unzip
-		
-		// with thanks to https://github.com/wbroek/IPA-Distribution
-		
+
 		if (!is_dir($userid)) {
 	    		if (!mkdir($userid)) die('Failed to create folder '.$fileid.'... Is the current folder writeable?');
 	    }
-		
-		$getdatasuccess = 0;
-		
-		if (is_dir($userid)) {
-		
-		$zip = zip_open($ipafilepath);
-		if ($zip) {
-		  while ($zip_entry = zip_read($zip)) {
-		    $fileinfo = pathinfo(zip_entry_name($zip_entry));	
-		    if ($fileinfo['basename']=="Info.plist") {
-		    	$fp = fopen($fileinfo['basename'], "w");
-		    	if (zip_entry_open($zip, $zip_entry, "r")) {
-			      $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-			      fwrite($fp,"$buf");
-			      zip_entry_close($zip_entry);	
-			      $getdatasuccess = 1;     
-			      fclose($fp);
-			    }
-		    }
-		  }
-		  zip_close($zip);
-		};
-		
-		};
-		
-		if ($getdatasuccess == 1){
 			
-			// get metadata from plist
-			$plist = new CFPropertyList('Info.plist');
-			$plistArray = $plist->toArray();	
-			$theapp_id = $plistArray['CFBundleIdentifier'];
-			$theapp_name = $plistArray['CFBundleDisplayName'];
-			$theapp_ver = $plistArray['CFBundleShortVersionString'];
-			
-			// cleanup temp plist
-			if (file_exists("Info.plist")) {
-				@unlink("Info.plist");
-			};	
-			
-			// put in database. use index to unique dropbox name, below
-			$theapp_id = pg_escape_string($theapp_id);
-			$theapp_name = pg_escape_string($theapp_name);
-			$theapp_ver = pg_escape_string($theapp_ver);
-			$theapp_hash = pg_escape_string(md5($theapp_id.$pwsalt.time()));
-			$q2='INSERT INTO pp_apps (ownerid, appid, appname, appversion, dlhash) VALUES ("'.$userid.'","'.$theapp_id.'","'.$theapp_name.'","'.$theapp_ver.'","'.$theapp_hash.'")';
-			
-			$pq2 = 'INSERT INTO '.$schemaname.'.pp_apps ("ownerid", "appid", "appname", "appversion", "dlhash") VALUES (\''.$userid.'\', \''.$theapp_id.'\', \''.$theapp_name.'\', \''.$theapp_ver.'\', \''.$theapp_hash.'\') RETURNING "id"'; 
-			$rs2 = pg_query($con, $pq2);
-			
-			// get insert id
-			$temp = pg_fetch_row($rs2); 
-			$last_inserted_id = $temp['0'];	
+		// get metadata from plist
+		$plist = new CFPropertyList('Info.plist');
+		$plistArray = $plist->toArray();	
+		$theapp_id = $plistArray['CFBundleIdentifier'];
+		$theapp_name = $plistArray['CFBundleDisplayName'];
+		$theapp_ver = $plistArray['CFBundleShortVersionString'];
+		
+		// cleanup temp plist
+		if (file_exists("Info.plist")) {
+			@unlink("Info.plist");
+		};	
+		
+		// put in database. use index to unique dropbox name, below
+		$theapp_id = pg_escape_string($theapp_id);
+		$theapp_name = pg_escape_string($theapp_name);
+		$theapp_ver = pg_escape_string($theapp_ver);
+		$theapp_hash = pg_escape_string(md5($theapp_id.$pwsalt.time()));
+		$q2='INSERT INTO pp_apps (ownerid, appid, appname, appversion, dlhash) VALUES ("'.$userid.'","'.$theapp_id.'","'.$theapp_name.'","'.$theapp_ver.'","'.$theapp_hash.'")';
+		
+		$pq2 = 'INSERT INTO '.$schemaname.'.pp_apps ("ownerid", "appid", "appname", "appversion", "dlhash") VALUES (\''.$userid.'\', \''.$theapp_id.'\', \''.$theapp_name.'\', \''.$theapp_ver.'\', \''.$theapp_hash.'\') RETURNING "id"'; 
+		$rs2 = pg_query($con, $pq2);
+		
+		// get insert id
+		$temp = pg_fetch_row($rs2); 
+		$last_inserted_id = $temp['0'];	
 
-			// push file to dropbox
-			$dbxfileurl = '/'.$userid.'/'.$last_inserted_id.'-'.$fname;
+		// push file to dropbox
+		$dbxfileurl = '/'.$userid.'/'.$last_inserted_id.'-'.$fname;
+		
+		$fup = fopen($ipafilepath, "rb");
+		$result = $dbxClient->uploadFile($dbxfileurl, dbx\WriteMode::add(), $fup);
+		fclose($fup);
+		
+		if ($result['mime_type'] == 'application/octet-stream'){		
+			// add dbx path to db
+			$dbxfileurl = pg_escape_string($dbxfileurl);
+			$pq3 = 'SUPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
+			$rs3 = pg_query($con, $pq3);	
 			
-			$fup = fopen($ipafilepath, "rb");
-			$result = $dbxClient->uploadFile($dbxfileurl, dbx\WriteMode::add(), $fup);
-			fclose($fup);
-			
-			if ($result['mime_type'] == 'application/octet-stream'){		
-				// add dbx path to db
-				$dbxfileurl = pg_escape_string($dbxfileurl);
-				$pq3 = 'SUPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
-				$rs3 = pg_query($con, $pq3);	
-				
-				echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
-						
-			}
-			else {
-				// TODO - remove db entry for failed
-			}
+			echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
+					
 		}
 		else {
-			echo('<p>Error - file could not be processed.');	
-		};		
+			// TODO - remove db entry for failed
+		}
+	
 	} 	// end upload
 	else if (($stage == 2) || ($stage == 3)){
 		// make share link
@@ -196,6 +164,24 @@ if (isset($_SESSION['pp_user'])) {
 	<form id="upform" action="manage.php" method="post" enctype="multipart/form-data">
 					<p>Select an IPA file to upload:
 					<input type="hidden" name="s" value="1">	
+					
+					<label for="appn">App Name</label>
+					<select name="appn" id="appn">
+					<?	
+					$pq1 = 'SELECT DISTINCT "appname" FROM '.$schemaname.'.pp_apps WHERE "ownerid" = \''.$userid.'\''; 
+					$rs1 = pg_query($con, $pq1);
+					if (pg_num_rows($rs1) == 0){
+						echo('<option value="none">No apps available</option>');
+					}
+					else {
+						echo('<option value="none">No group selected</option>');
+						while ($group_row = pg_fetch_array($rs1)){
+							echo('<option value="'.$group_row['id'].'">'.$group_row['appname'].'</option>');	
+						};
+					};
+					?>	
+					</select>
+					
 					<p><input type="file" name="file" id="file" class="required">
 					<p><input class="button upbtn" type="submit" name="submit" value="Upload">
 	</form>
