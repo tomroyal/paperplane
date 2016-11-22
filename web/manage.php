@@ -185,7 +185,7 @@ if (isset($_SESSION['pp_user'])) {
 					
 					<br><label class="custom-file-upload">
 					    <input type="file" name="file" id="file" class="required"/>
-					    Choose IPA
+					    Choose IPA File
 					</label>
 					
 					<br><input class="button upbtn" type="submit" name="submit" value="Upload">
