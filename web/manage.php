@@ -179,13 +179,13 @@ if (isset($_SESSION['pp_user'])) {
 					</select>
 					
 					<label for="appx">Or New Name</label>
-					<input type="text" name="appx" id="appx"></p>
+					<input type="text" name="appx" id="appx">
 					
-					<label for="appy">New AppID/label>
-					<input type="text" name="appy" id="appy"></p>
+					<label for="appy">New AppID</label>
+					<input type="text" name="appy" id="appy">
 					
 					<label for="appv">Version Number</label>
-					<input type="text" name="appv" id="appv"></p>
+					<input type="text" name="appv" id="appv">
 					
 					<label class="custom-file-upload">
 					    <input type="file" name="file" id="file" class="required"/>Choose IPA File
