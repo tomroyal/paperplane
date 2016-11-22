@@ -14,6 +14,8 @@ $share_email =  $_REQUEST['e'];
 
 $add_id = $_REQUEST['appn'];
 $add_ver = $_REQUEST['appv'];
+$add_name = $_REQUEST['appx'];
+$add_appid = $_REQUEST['appy'];
 
 
 use \Dropbox as dbx;
@@ -40,8 +42,9 @@ if (isset($_SESSION['pp_user'])) {
 	    }
 		
 		// get metadata for app
+		$gotmetadata = 0;
 		
-		if ($add_id != ""){
+		if (($add_id != "") && ($add_ver != "")){
 			// new version of existing app
 			$add_id = pg_escape_string($add_id);
 			$pq10 = 'SELECT * FROM '.$schemaname.'.pp_apps WHERE "id" = \''.$add_id.'\''; 
@@ -50,47 +53,64 @@ if (isset($_SESSION['pp_user'])) {
 			while($row10 = pg_fetch_assoc($rs10)){
 			    $theapp_id = $row10['appid'];
 			    $theapp_name = $row10['appname'];
-			    $theapp_ver = $add_ver;
-			};
-			
+			    $theapp_ver = pg_escape_string($add_ver);
+			    $gotmetadata = 1;
+			};	
 		}
 		else {
 			// new app
+			if (($add_name != "") && ($add_appid != "") && ($add_ver != "")){
+				$theapp_name = pg_escape_string($add_name);
+				$theapp_id = pg_escape_string($add_appid);
+				$theapp_ver = pg_escape_string($add_ver);
+				$gotmetadata = 1;
+			}
+			else {
+				// missing required data
+			};
 		}
 		
-		// put in database. use index to unique dropbox name, below
-		$theapp_id = pg_escape_string($theapp_id);
-		$theapp_name = pg_escape_string($theapp_name);
-		$theapp_ver = pg_escape_string($theapp_ver);
-		$theapp_hash = pg_escape_string(md5($theapp_id.$pwsalt.time()));
-		$q2='INSERT INTO pp_apps (ownerid, appid, appname, appversion, dlhash) VALUES ("'.$userid.'","'.$theapp_id.'","'.$theapp_name.'","'.$theapp_ver.'","'.$theapp_hash.'")';
+		if ($gotmetadata == 1){
 		
-		$pq2 = 'INSERT INTO '.$schemaname.'.pp_apps ("ownerid", "appid", "appname", "appversion", "dlhash") VALUES (\''.$userid.'\', \''.$theapp_id.'\', \''.$theapp_name.'\', \''.$theapp_ver.'\', \''.$theapp_hash.'\') RETURNING "id"'; 
-		$rs2 = pg_query($con, $pq2);
-		
-		// get insert id
-		$temp = pg_fetch_row($rs2); 
-		$last_inserted_id = $temp['0'];	
-
-		// push file to dropbox
-		$dbxfileurl = '/'.$userid.'/'.$last_inserted_id.'-'.$fname;
-		
-		$fup = fopen($ipafilepath, "rb");
-		$result = $dbxClient->uploadFile($dbxfileurl, dbx\WriteMode::add(), $fup);
-		fclose($fup);
-		
-		if ($result['mime_type'] == 'application/octet-stream'){		
-			// add dbx path to db
-			$dbxfileurl = pg_escape_string($dbxfileurl);
-			$pq3 = 'UPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
-			$rs3 = pg_query($con, $pq3);	
+			// put in database. use index to unique dropbox name, below
+			$theapp_id = pg_escape_string($theapp_id);
+			$theapp_name = pg_escape_string($theapp_name);
+			$theapp_ver = pg_escape_string($theapp_ver);
+			$theapp_hash = pg_escape_string(md5($theapp_id.$pwsalt.time()));
+			$q2='INSERT INTO pp_apps (ownerid, appid, appname, appversion, dlhash) VALUES ("'.$userid.'","'.$theapp_id.'","'.$theapp_name.'","'.$theapp_ver.'","'.$theapp_hash.'")';
 			
-			echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
-					
+			$pq2 = 'INSERT INTO '.$schemaname.'.pp_apps ("ownerid", "appid", "appname", "appversion", "dlhash") VALUES (\''.$userid.'\', \''.$theapp_id.'\', \''.$theapp_name.'\', \''.$theapp_ver.'\', \''.$theapp_hash.'\') RETURNING "id"'; 
+			$rs2 = pg_query($con, $pq2);
+			
+			// get insert id
+			$temp = pg_fetch_row($rs2); 
+			$last_inserted_id = $temp['0'];	
+	
+			// push file to dropbox
+			$dbxfileurl = '/'.$userid.'/'.$last_inserted_id.'-'.$fname;
+			
+			$fup = fopen($ipafilepath, "rb");
+			$result = $dbxClient->uploadFile($dbxfileurl, dbx\WriteMode::add(), $fup);
+			fclose($fup);
+			
+			if ($result['mime_type'] == 'application/octet-stream'){		
+				// add dbx path to db
+				$dbxfileurl = pg_escape_string($dbxfileurl);
+				$pq3 = 'UPDATE '.$schemaname.'.pp_apps SET "appdbpath" = \''.$dbxfileurl.'\' WHERE  "id" = \''.$last_inserted_id.'\''; 
+				$rs3 = pg_query($con, $pq3);	
+				
+				echo('<p class="alert">Success - '.$theapp_name.' version '.$theapp_ver.' uploaded.');
+						
+			}
+			else {
+				// TODO - remove db entry for failed
+			}
 		}
 		else {
-			// TODO - remove db entry for failed
-		}
+			// error
+			echo('<p class="alert">Error - missing information required to add a version');	
+		};
+			
 	
 	} 	// end upload
 	else if (($stage == 2) || ($stage == 3)){
