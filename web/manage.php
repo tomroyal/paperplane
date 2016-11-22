@@ -7,13 +7,13 @@ session_start();
 
 include('./includes/ppconfig.php');
 require('autoload.php'); // does dropbox
-include('./includes/CFP/CFPropertyList.php'); // doesn't work via composer, odd..
+// include('./includes/CFP/CFPropertyList.php'); // doesn't work via composer, odd..
 
 $stage = $_REQUEST['s'];
 $share_app_id = $_REQUEST['i'];
 $share_email =  $_REQUEST['e'];
 
-$add_id =  $_REQUEST['appn'];
+$add_id = $_REQUEST['appn'];
 $add_ver = $_REQUEST['appv'];
 
 
@@ -49,8 +49,8 @@ if (isset($_SESSION['pp_user'])) {
 			$rs10 = pg_query($con, $pq10);
 			
 			while($row10 = pg_fetch_assoc($rs10)){
-			    $theapp_id = $row5['appid'];
-			    $theapp_name = $row5['appname'];
+			    $theapp_id = $row10['appid'];
+			    $theapp_name = $row10['appname'];
 			    $theapp_ver = $add_ver;
 			};
 			
